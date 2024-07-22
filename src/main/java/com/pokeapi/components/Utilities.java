@@ -17,12 +17,17 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 public class Utilities {
-    public static JLabel loadImage(String source) throws IOException {
-        URL url = new URL(source);
-        BufferedImage bufferedImage = ImageIO.read(url);
+    public static BufferedImage loadImage(String url) throws IOException {
+        URL imageUrl = new URL(url);
+        BufferedImage bufferedImage = ImageIO.read(imageUrl);
 
-        Image scaledImage = bufferedImage.getScaledInstance(150, 200, Image.SCALE_SMOOTH);
-        return new JLabel(new ImageIcon(scaledImage));
+        return bufferedImage;
+    }
+
+    public static JLabel makeImage(BufferedImage bufferedImage, int width, int height) {
+        Image image = bufferedImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        JLabel label = new JLabel(new ImageIcon(image));
+        return label;
     }
 
     public static String capitalizeFirstLetter(String input) {
@@ -32,7 +37,7 @@ public class Utilities {
         return input.substring(0, 1).toUpperCase() + input.substring(1).toLowerCase();
     }
 
-    public static HttpResponse<String> getResponse(String url) {
+    public static HttpResponse<String> fetch(String url) {
         HttpResponse<String> response = null;
         try {
             HttpClient client = HttpClient.newHttpClient();
